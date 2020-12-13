@@ -1,0 +1,52 @@
+﻿<Page x:Class="PhotoRobot.View.Pages.FrameMain"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PhotoRobot.View.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="FrameMain">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="20"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+            <ColumnDefinition Width="20"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="20"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Image Grid.Column="5" Grid.Row="1" Source="/PhotoRobot;component/Resources/5WqcvU6kJ9w.jpg"></Image>
+        <Button Style="{StaticResource ImageButton}" Name="Settings" Grid.Column="5" Grid.Row="1" Background="Transparent" Click="Settings_Click"></Button>
+        <Button Style="{StaticResource ImageButton}" Name="FirstLeft" Click="FirstLeft_Click" FontFamily="Marlett" FontSize="50" Content="3" Margin="15" Background="Transparent" Grid.Column="1" Grid.Row="3" />
+        <Button Style="{StaticResource ImageButton}" Name="SecondLeft" Click="SecondLeft_Click" FontFamily="Marlett" FontSize="50" Content="3" Margin="15" Background="Transparent" Grid.Column="1" Grid.Row="4" />
+        <Button Style="{StaticResource ImageButton}" Name="ThirdLeft" Click="ThirdLeft_Click" FontFamily="Marlett" FontSize="50" Content="3" Margin="15" Background="Transparent" Grid.Column="1" Grid.Row="5" />
+        <Button Style="{StaticResource ImageButton}" Name="FirstRight" Click="FirstRight_Click" FontFamily="Marlett" FontSize="50" Content="4" Margin="15" Background="Transparent" Grid.Column="5" Grid.Row="3" />
+        <Button Style="{StaticResource ImageButton}" Name="SecondRight" Click="SecondRight_Click" FontFamily="Marlett" FontSize="50" Content="4" Margin="15" Background="Transparent" Grid.Column="5" Grid.Row="4" />
+        <Button Style="{StaticResource ImageButton}" Name="ThirdRight" Click="ThirdRight_Click" FontFamily="Marlett" FontSize="50" Content="4" Margin="15" Background="Transparent" Grid.Column="5" Grid.Row="5" />
+        <Grid Name="Images" Grid.Row="2" Grid.Column="3" Grid.RowSpan="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Name="ImageOne"  Grid.Row="0" Stretch="Fill"></Image>
+            <Image Name="ImageSecond"  Grid.Row="1" Stretch="Fill"></Image>
+            <Image Name="ImageThird"  Grid.Row="2" Stretch="Fill"></Image>
+        </Grid>
+        <Button Name="Create" Grid.Column="3" Grid.Row="7" Content="Создать" FontSize="26" Background="Transparent" Margin="80,10" Click="Create_Click" FontWeight="Bold" FontStyle="Italic" FontFamily="Showcard Gothic"></Button>
+    </Grid>
+</Page>

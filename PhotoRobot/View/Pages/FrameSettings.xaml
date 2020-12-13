@@ -1,0 +1,44 @@
+﻿<Page x:Class="PhotoRobot.View.Pages.FrameSettings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PhotoRobot.View.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="FrameSettings">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="20"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+            <ColumnDefinition Width="20"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="20"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Name="PathOne" Grid.Row="3" Grid.Column="3" Text="" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBlock Name="PathSecond" Grid.Row="4" Grid.Column="3" Text="" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <TextBlock Name="PathThird" Grid.Row="5" Grid.Column="3" Text="" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <Image Grid.Column="5" Grid.Row="1" Source="/PhotoRobot;component/Resources/5WqcvU6kJ9w.jpg"></Image>
+        <Button Style="{StaticResource ImageButton}" Name="Settings" Grid.Column="5" Grid.Row="1" Background="Transparent" Click="Settings_Click"></Button>
+        <Image Source="/PhotoRobot;component/Resources/1200px-Windows_Explorer_Icon.svg.png" Grid.Column="5" Grid.Row="3"></Image>
+        <Button Style="{StaticResource ImageButton}" Name="DirOne" Grid.Column="5" Grid.Row="3" Background="Transparent" Click="DirOne_Click"></Button>
+        <Image Source="/PhotoRobot;component/Resources/1200px-Windows_Explorer_Icon.svg.png" Grid.Column="5" Grid.Row="4"></Image>
+        <Button Style="{StaticResource ImageButton}" Name="DirSecond" Grid.Column="5" Grid.Row="4" Background="Transparent" Click="DirSecond_Click"></Button>
+        <Image Source="/PhotoRobot;component/Resources/1200px-Windows_Explorer_Icon.svg.png" Grid.Column="5" Grid.Row="5"></Image>
+        <Button Style="{StaticResource ImageButton}" Name="DirThird" Grid.Column="5" Grid.Row="5" Background="Transparent" Click="DirThird_Click"></Button>
+    </Grid>
+</Page>
