@@ -33,7 +33,6 @@ namespace PhotoRobot.View.Pages
         public FrameMain()
         {
             InitializeComponent();
-            Properties.Settings.Default.Reset();
             try
             {
                 if (Properties.Settings.Default.PathToDirectoryOne != "Путь до файловой директории отсутствует")
