@@ -23,16 +23,17 @@ namespace PhotoRobot.View.Pages
     /// </summary>
     public partial class FrameMain : Page
     {
-        private string[] filesOne;
+        private string[] filesOne = { };
         private int currentOne = 0;
-        private string[] filesSecond;
+        private string[] filesSecond = { };
         private int currentSecond = 0;
-        private string[] filesThird;
+        private string[] filesThird = { };
         private int currentThird = 0;
 
         public FrameMain()
         {
             InitializeComponent();
+            Properties.Settings.Default.Reset();
             try
             {
                 if (Properties.Settings.Default.PathToDirectoryOne != "Путь до файловой директории отсутствует")
