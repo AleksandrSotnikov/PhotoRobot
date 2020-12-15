@@ -18,119 +18,121 @@ using System.Windows.Shapes;
 
 namespace PhotoRobot.View.Pages
 {
-    /// <summary>
+    /// <summary>   
     /// Логика взаимодействия для FrameMain.xaml
     /// </summary>
     public partial class FrameMain : Page
     {
-        private string[] filesOne = { };
-        private int currentOne = 0;
-        private string[] filesSecond = { };
-        private int currentSecond = 0;
-        private string[] filesThird = { };
-        private int currentThird = 0;
+        private string[] filesOne = { };//Хранение путей до jpg файла#1
+        private int currentOne = 0;//Текущий jpg файл#1
+        private string[] filesSecond = { };//Хранение путей до jpg файла#2
+        private int currentSecond = 0;//Текущий jpg файл#2
+        private string[] filesThird = { };//Хранение путей до jpg файла#3
+        private int currentThird = 0;//Текущий jpg файл #3
 
-        public FrameMain()
+        public FrameMain()//конструктор класса
         {
-            InitializeComponent();
-            try
+            InitializeComponent();//Инцииализация компонентов
+            try//Обработка ошибок
             {
-                if (Properties.Settings.Default.PathToDirectoryOne != "Путь до файловой директории отсутствует")
+                init();//вызов метода init
+            }
+            catch//Обработка ошибок
+            {
+                Properties.Settings.Default.Reset();//Сброс прописанных путей при ошибке
+            }
+        }
+
+        private string[] initSetting(int current,String PathDirection, string[] files, System.Windows.Controls.Image image)//Метод инициализации настроек
+        {
+            if(PathDirection != "Путь до файловой директории отсутствует")//Проверка на стандартную строку
+            {
+                files = Directory.GetFiles(PathDirection, "*.jpg", SearchOption.AllDirectories);//Поиск всех файлов с расширением .jpg в текущей директории
+                if(files.Length>0) image.Source = BitmapFrame.Create(new Uri(@files[current]));//Если в списке присутствуют файлы то вывод на экран
+            }
+            return files;//Возврат массива путей до .jpg файла
+        }
+
+        private void init() {//метод инициализации настроек
+            filesOne = initSetting(currentOne,Properties.Settings.Default.PathToDirectoryOne, filesOne, ImageOne);//Присваивание массиву путей до файлов
+            filesSecond = initSetting(currentSecond, Properties.Settings.Default.PathToDirectorySecond, filesSecond, ImageSecond);//Присваивание массиву путей до файлов
+            filesThird = initSetting(currentThird, Properties.Settings.Default.PathToDirectoryThird, filesThird, ImageThird);//Присваивание массиву путей до файлов
+        }
+
+
+        private int RightClick(int current, string[] files, System.Windows.Controls.Image image)//Обработчик событий нажатия на правую стрелочку
+        {
+            if (current + 1 < files.Length)//Если путь до файла существует то выполнить действие
+            {
+                image.Source = BitmapFrame.Create(new Uri(@files[current+1]));//Создание картинки в компоненте image
+                return 1;//возврат 1
+            }
+            return 0;//возврат 0
+        }
+
+        private void ThirdRight_Click(object sender, RoutedEventArgs e)//Обработчик события нажатия на 3 правую стрелочку
+        {
+           currentThird += RightClick(currentThird, filesThird, ImageThird);//Изменение значения переменной в зависимости от того что вернет обработчик событий
+        }
+
+        private void SecondRight_Click(object sender, RoutedEventArgs e)//Обработчик события нажатия на 2 правую стрелочку
+        {
+            currentSecond += RightClick(currentSecond, filesSecond, ImageSecond);//Изменение значения переменной в зависимости от того что вернет обработчик событий
+        }
+
+        private void FirstRight_Click(object sender, RoutedEventArgs e)//Обработчик события нажатия на 1 правую стрелочку
+        {
+            currentOne += RightClick(currentOne, filesOne, ImageOne);//Изменение значения переменной в зависимости от того что вернет обработчик событий
+        }
+
+        private void Create_Click(object sender, RoutedEventArgs e)//Обработчик события нажатия кнопки создать
+        {
+            using (SaveFileDialog dialog = new SaveFileDialog()) {//Создание SaveFileDialog
+                dialog.Filter = "jpg files (*.jpg)|*.jpg|All files (*.*)|*.*";//Доступные расширения файла
+                dialog.FilterIndex = 1;//выбор текущего расширения
+                if (dialog.ShowDialog() == DialogResult.OK)//Если была нажата клавиша ок при сохранении
                 {
-                    filesOne = Directory.GetFiles(Properties.Settings.Default.PathToDirectoryOne, "*.jpg", SearchOption.AllDirectories);
-                    if (filesOne.Length > 0) ImageOne.Source = BitmapFrame.Create(new Uri(@filesOne[0]));
-                }
-                if (Properties.Settings.Default.PathToDirectorySecond != "Путь до файловой директории отсутствует")
-                {
-                    filesSecond = Directory.GetFiles(Properties.Settings.Default.PathToDirectorySecond, "*.jpg", SearchOption.AllDirectories);
-                    if (filesSecond.Length > 0) ImageSecond.Source = BitmapFrame.Create(new Uri(@filesSecond[0]));
-                }
-                if (Properties.Settings.Default.PathToDirectoryThird != "Путь до файловой директории отсутствует")
-                {
-                    filesThird = Directory.GetFiles(Properties.Settings.Default.PathToDirectoryThird, "*.jpg", SearchOption.AllDirectories);
-                    if (filesThird.Length > 0) ImageThird.Source = BitmapFrame.Create(new Uri(@filesThird[0]));
+                    RenderTargetBitmap renderTargetBitmap =
+                        new RenderTargetBitmap((int)(Images.ActualWidth * 6), (int)(Images.ActualHeight * 6), 384, 384, PixelFormats.Pbgra32);//Приобразование элемента страницы в изображение
+                    renderTargetBitmap.Render(Images);//Визуализирует
+                    PngBitmapEncoder pngImage = new PngBitmapEncoder();//Кодировщик картинки
+                    pngImage.Frames.Add(BitmapFrame.Create(renderTargetBitmap));//Создание картинки
+                    using (Stream fileStream = File.Create(@dialog.FileName))//Создание потока записи
+                    {
+                        pngImage.Save(fileStream);//Сохранение картинки в файл
+                    }
                 }
             }
-            catch
+            init();//Вызов метода инициализации, на случай если файл сохранен в той же директории, где храняться фотографии
+        }
+
+        private int LeftClick(int current, string[] files, System.Windows.Controls.Image image)//Обработчик событий нажатия на левую стрелочку
+        {
+            if (current - 1 >= 0)//Если путь до файла существует то выполнить действие
             {
-                Properties.Settings.Default.Reset();
+                image.Source = BitmapFrame.Create(new Uri(@files[current-1]));//Создание картинки в image
+                return -1;//Возврат -1
             }
+            return 0;//Возврат 0
+        }
+        private void ThirdLeft_Click(object sender, RoutedEventArgs e)//Обработчик событий нажатия на левую стрелочку #3
+        {
+            currentThird += LeftClick(currentThird, filesThird, ImageThird);//Изменение значения переменной в зависимости от того что вернет обработчик событий
         }
 
-        private void ThirdRight_Click(object sender, RoutedEventArgs e)
+        private void SecondLeft_Click(object sender, RoutedEventArgs e)//Обработчик событий нажатия на левую стрелочку #2
         {
-            if (currentThird + 1 < filesThird.Length)
-            {
-                currentThird++;
-                ImageThird.Source = BitmapFrame.Create(new Uri(@filesThird[currentThird]));
-            }
+            currentSecond += LeftClick(currentSecond, filesSecond, ImageSecond);//Изменение значения переменной в зависимости от того что вернет обработчик событий
         }
 
-        private void SecondRight_Click(object sender, RoutedEventArgs e)
+        private void FirstLeft_Click(object sender, RoutedEventArgs e)//Обработчик событий нажатия на левую стрелочку #1
         {
-            if (currentSecond + 1 < filesSecond.Length)
-            {
-                currentSecond++;
-                ImageSecond.Source = BitmapFrame.Create(new Uri(@filesSecond[currentSecond]));
-            }
+            currentOne += LeftClick(currentOne, filesOne, ImageOne);//Изменение значения переменной в зависимости от того что вернет обработчик событий
         }
 
-        private void FirstRight_Click(object sender, RoutedEventArgs e)
+        private void Settings_Click(object sender, RoutedEventArgs e)//Обработчик событий нажатия на кнопку настроеек
         {
-            if (currentOne + 1 < filesOne.Length)
-            {
-                currentOne++;
-                ImageOne.Source = BitmapFrame.Create(new Uri(@filesOne[currentOne]));
-            }
-        }
-
-        private void Create_Click(object sender, RoutedEventArgs e)
-        {
-            using (var dialog = new FolderBrowserDialog())
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {                
-                RenderTargetBitmap renderTargetBitmap =
-                    new RenderTargetBitmap((int)(Images.ActualWidth*6),(int)(Images.ActualHeight * 6), 384, 384, PixelFormats.Pbgra32);
-                renderTargetBitmap.Render(Images);
-                PngBitmapEncoder pngImage = new PngBitmapEncoder();
-                pngImage.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
-                using (Stream fileStream = File.Create(@dialog.SelectedPath+"/file.jpg"))
-                {
-                   pngImage.Save(fileStream);
-                }
-            }
-        }
-
-        private void ThirdLeft_Click(object sender, RoutedEventArgs e)
-        {
-            if (currentThird - 1 >= 0)
-            {
-                currentThird--;
-                ImageThird.Source = BitmapFrame.Create(new Uri(@filesThird[currentThird]));
-            }
-        }
-
-        private void SecondLeft_Click(object sender, RoutedEventArgs e)
-        {
-            if (currentSecond - 1 >= 0)
-            {
-                currentSecond--;
-                ImageSecond.Source = BitmapFrame.Create(new Uri(@filesSecond[currentSecond]));
-            }
-        }
-
-        private void FirstLeft_Click(object sender, RoutedEventArgs e)
-        {
-            if (currentOne - 1 >= 0)
-            {
-                currentOne--;
-                ImageOne.Source = BitmapFrame.Create(new Uri(@filesOne[currentOne]));
-            }
-        }
-
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-            Helper.FrameUpdater.frame.Navigate(new View.Pages.FrameSettings());
+            Helper.FrameUpdater.frame.Navigate(new View.Pages.FrameSettings());//Обращение к frame для осуществления перехода на страницу
         }
     }
 }

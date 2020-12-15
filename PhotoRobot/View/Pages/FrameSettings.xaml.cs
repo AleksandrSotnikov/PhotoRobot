@@ -21,50 +21,47 @@ namespace PhotoRobot.View.Pages
     /// </summary>
     public partial class FrameSettings : Page
     {
-        public FrameSettings()
+        public FrameSettings()//конструктор класса
         {
-            InitializeComponent();
-            PathOne.Text = Properties.Settings.Default.PathToDirectoryOne;
-            PathSecond.Text = Properties.Settings.Default.PathToDirectorySecond;
-            PathThird.Text = Properties.Settings.Default.PathToDirectoryThird;
+            InitializeComponent();//Инициализация компонентов
+            PathOne.Text = Properties.Settings.Default.PathToDirectoryOne;//Вывод текущей директории 1 файла
+            PathSecond.Text = Properties.Settings.Default.PathToDirectorySecond;//Вывод текущей директории 2 файла
+            PathThird.Text = Properties.Settings.Default.PathToDirectoryThird;//Вывод текущей директории 3 файла
         }
 
-        private void DirOne_Click(object sender, RoutedEventArgs e)
+        private void DirEdit( System.Windows.Controls.TextBlock tb)//Обработчик изменения директории
         {
-            using (var dialog = new FolderBrowserDialog())
-                if (dialog.ShowDialog() == DialogResult.OK)
+            string path;//Создание строковой переменной path
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog())//Создание FolderBrowserDialog
+                if (dialog.ShowDialog() == DialogResult.OK)//Если была нажата клавиша ок при выборе директории
                 {
-                    Properties.Settings.Default.PathToDirectoryOne = dialog.SelectedPath;
-                    PathOne.Text = Properties.Settings.Default.PathToDirectoryOne;
-                    Properties.Settings.Default.Save();
-                }
+                    path = dialog.SelectedPath;//Присваивания пути до файла в переменную path
+                    tb.Text = path;//Вывод измененной директории
+                    Properties.Settings.Default.PathToDirectoryOne = Properties.Settings.Default.PathToDirectoryOne != PathOne.Text ? path : Properties.Settings.Default.PathToDirectoryOne;// Изменения настроек пути
+                    Properties.Settings.Default.PathToDirectorySecond = Properties.Settings.Default.PathToDirectorySecond != PathSecond.Text ? path : Properties.Settings.Default.PathToDirectorySecond;// Изменения настроек пути
+                    Properties.Settings.Default.PathToDirectoryThird = Properties.Settings.Default.PathToDirectoryThird != PathThird.Text ? path : Properties.Settings.Default.PathToDirectoryThird;// Изменения настроек пути
+                    Properties.Settings.Default.Save();//Сохранения путей
+                }    
         }
 
-        private void DirThird_Click(object sender, RoutedEventArgs e)
+        private void DirOne_Click(object sender, RoutedEventArgs e)//Обработчик события нажатия на кнопку выбора директории #1
         {
-            using (var dialog = new FolderBrowserDialog())
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    Properties.Settings.Default.PathToDirectoryThird = dialog.SelectedPath;
-                    PathThird.Text = Properties.Settings.Default.PathToDirectoryThird;
-                    Properties.Settings.Default.Save();
-                }
+            DirEdit(PathOne);//Вызов метода DirEdit
         }
 
-        private void DirSecond_Click(object sender, RoutedEventArgs e)
+        private void DirThird_Click(object sender, RoutedEventArgs e)//Обработчик события нажатия на кнопку выбора директории #2
         {
-            using (var dialog = new FolderBrowserDialog())
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    Properties.Settings.Default.PathToDirectorySecond = dialog.SelectedPath;
-                    PathSecond.Text = Properties.Settings.Default.PathToDirectorySecond;
-                    Properties.Settings.Default.Save();
-                }
+            DirEdit(PathThird);//Вызов метода DirEdit
         }
 
-        private void Settings_Click(object sender, RoutedEventArgs e)
+        private void DirSecond_Click(object sender, RoutedEventArgs e)//Обработчик события нажатия на кнопку выбора директории #3
         {
-            Helper.FrameUpdater.frame.Navigate(new View.Pages.FrameMain());
+            DirEdit(PathSecond);//Вызов метода DirEdit
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)//Обработчик событий нажатия на кнопку настроеек 
+        {
+            Helper.FrameUpdater.frame.Navigate(new View.Pages.FrameMain());//Обращение к frame для осуществления перехода на страницу
         }
     }
 }

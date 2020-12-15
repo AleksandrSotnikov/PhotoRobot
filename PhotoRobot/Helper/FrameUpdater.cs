@@ -9,6 +9,6 @@ namespace PhotoRobot.Helper
 {
     class FrameUpdater
     {
-        public static Frame frame { get; set; }
+        public static Frame frame { get; set; }//Создание общедоступной переменной типа Frame
     }
 }

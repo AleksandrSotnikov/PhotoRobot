@@ -19,11 +19,11 @@ namespace PhotoRobot.View
     /// </summary>
     public partial class WindowPhotorobot : Window
     {
-        public WindowPhotorobot()
+        public WindowPhotorobot()//Метод создания стартового окна
         {
-            InitializeComponent();
-            Helper.FrameUpdater.frame = CurrentFrame;
-            Helper.FrameUpdater.frame.Navigate(new View.Pages.FrameMain());
+            InitializeComponent();//Инициализация компонентов
+            Helper.FrameUpdater.frame = CurrentFrame;//Инициализация переменной frame текущим frame
+            Helper.FrameUpdater.frame.Navigate(new View.Pages.FrameMain());//Навигация между страницами
         }
     }
 }
